@@ -13,12 +13,12 @@ export const changePassword = asyncHandler(async(req,res,next)=>{
     const {_id} = req.user._id
     const {currentPassword , newPassword , cNewPassword } = req.body
     if (newPassword != cNewPassword){
-        return next(new Error("Mis Match Password"),{cause:400})
+        return next(new Error("Mis Match Password" ,{cause:400}))
     }
     const checkPassword = bcrypt.compareSync(currentPassword , req.user.password)
     console.log(checkPassword)
     if (!checkPassword){
-        return next(new Error("Wrong Password"),{cause:400})
+        return next(new Error("Wrong Password",{cause:400}))
     }
     const hashPassword = bcrypt.hashSync(newPassword , parseInt(process.env.SALTROUND))
     const updatedPassword = await userModel.findByIdAndUpdate({_id},{password:hashPassword},{new:true})
